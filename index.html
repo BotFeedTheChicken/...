@@ -49,8 +49,19 @@
     <script>
         const statusDiv = document.getElementById('wallet-status');
         
-        // Используем публичный манифест для тестирования
-        const manifestUrl = 'https://raw.githubusercontent.com/ton-connect/sdk/main/demo/demo.html/manifest.json';
+        // Используем PNG иконку через сервис data:image/png (эмулируем PNG)
+        // Создаем корректный манифест с PNG иконкой
+        const manifestData = {
+            url: window.location.origin || 'https://mysite.com',
+            name: 'mysite',
+            iconUrl: 'https://tonkeeper.com/assets/tonconnect-icon.png', // Готовое PNG изображение от Tonkeeper
+            termsOfUseUrl: '',
+            privacyPolicyUrl: ''
+        };
+        
+        // Создаем Blob с манифестом
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
         
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: manifestUrl,
