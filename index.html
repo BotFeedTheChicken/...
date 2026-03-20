@@ -1,9 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Hello</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mysite</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230098ea'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-weight='bold'%3EM%3C/text%3E%3C/svg%3E">
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        #ton-connect-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .wallet-status {
+            margin-top: 1.5rem;
+            color: #333;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
-    Hello
+    <div class="container">
+        <div id="ton-connect-button"></div>
+        <div id="wallet-status" class="wallet-status"></div>
+    </div>
+
+    <script>
+        const manifestData = {
+            url: window.location.origin,
+            name: "mysite",
+            iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230098ea'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white' font-weight='bold'%3EM%3C/text%3E%3C/svg%3E",
+            termsOfUseUrl: "",
+            privacyPolicyUrl: ""
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: manifestUrl,
+            buttonRootId: 'ton-connect-button'
+        });
+
+        const statusDiv = document.getElementById('wallet-status');
+
+        tonConnectUI.onStatusChange((wallet) => {
+            if (wallet) {
+                statusDiv.innerHTML = '✅ work';
+            } else {
+                statusDiv.innerHTML = '❌ doesnt work';
+            }
+        });
+
+        if (tonConnectUI.wallet) {
+            statusDiv.innerHTML = '✅ work';
+        } else {
+            statusDiv.innerHTML = '❌ doesnt work';
+        }
+    </script>
 </body>
 </html>
