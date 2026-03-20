@@ -1,0 +1,4 @@
+{curl 8.0, 9.0 applet}
+{curl-file-attributes character-encoding = "utf8"}
+
+{paragraph "Hello"}
